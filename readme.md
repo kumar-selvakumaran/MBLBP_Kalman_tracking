@@ -84,5 +84,44 @@ Given:
 $$x_t = Ax_{t-1} + n_t$$
 $$z_t = Hx_{t} + m_t$$
 where:
-- process noise is $n_t = [w_t^T, dw_t^T]^T$ with diagonal covariance $Q = diag\{\{\sigma_w^2, \sigma_w^2, \sigma_dw^2, \sigma_dw^2\}\}$
-- measurement noise is $m_t = [m_{u,t}, m_{v,t}]^T$ represents 0 mean and diagonal covariance matrix $R = diag\{\sigma_m^2, \sigma_m^2\}$
+- process noise is $n_t = [w_t^T, dw_t^T]^T$ with diagonal covariance $Q = diag \{ \sigma_w^2, \sigma_w^2, \sigma_dw^2, \sigma_dw^2 \} $
+- measurement noise is $m_t = [m_{u,t}, m_{v,t}]^T$ represents 0 mean and diagonal covariance matrix $R = diag \{ \sigma_m^2, \sigma_m^2\} $
+- $A$ is the state transition matrix : 
+$$
+\mathbf{A} = \begin{pmatrix}
+1 & 0 & \tau & 0 \\
+0 & 1 & 0 & \tau \\
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1
+\end{pmatrix},
+$$
+- $H$ is the measurement matrix
+$$
+\mathbf{H} = \begin{pmatrix}
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0
+\end{pmatrix}.
+$$
+
+Given these establishments, the Prediction and correction can be done as below:
+
+**Prediction** :
+
+$$\hat{\mathbf{x}}_t^- = \mathbf{A} \hat{\mathbf{x}}_{t-1}$$
+$$\mathbf{P}_t^- = \mathbf{A} \mathbf{P}_{t-1} \mathbf{A}^T + \mathbf{Q}$$
+
+Where:
+- $\hat{\mathbf{x}}_t^-$ is the prediction of $x_t$
+- $P_t^-$ is the covariance matrix of $\hat{\mathbf{x}}_t^-$
+
+given the observation $z_t$, correction can be done like so:
+
+**Correction** :
+
+$$\hat{\mathbf{x}}_t = \hat{\mathbf{x}}_t^- + \mathbf{K}_t (\mathbf{z}_t - \mathbf{H} \hat{\mathbf{x}}_t^-)$$
+$$\mathbf{P}_t = (\mathbf{I} - \mathbf{K}_t \mathbf{H}) \mathbf{P}_t^-$$
+$$\mathbf{K}_t = \mathbf{P}_t^- \mathbf{H}^T (\mathbf{H} \mathbf{P}_t^- \mathbf{H}^T + \mathbf{R})^{-1}$$
+
+where:
+- $K_t$ is the Kalman gain matrix
+- $P_t$ is the estimated covariance matrix of $\hat{\mathbf{x}}_t$.
