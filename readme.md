@@ -84,5 +84,5 @@ Given:
 $$x_t = Ax_{t-1} + n_t$$
 $$z_t = Hx_{t} + m_t$$
 where:
-- process noise is $n_t = [w_t^T, dw_t^T]^T$ with diagonal covariance $Q = diag\{\sigma_w^2, \sigma_w^2, \sigma_dw^2, \sigma_dw^2\}$
-- measurement noise is $m_t = [m_{u,t}, m_{v,t}]^T$ represents 0 mean and diagonal covariance matrix $R = diag\{\sigma_m^2, and \sigma_m^2\}$
+- process noise is $n_t = [w_t^T, dw_t^T]^T$ with diagonal covariance $Q = diag\{\{\sigma_w^2, \sigma_w^2, \sigma_dw^2, \sigma_dw^2\}\}$
+- measurement noise is $m_t = [m_{u,t}, m_{v,t}]^T$ represents 0 mean and diagonal covariance matrix $R = diag\{\sigma_m^2, \sigma_m^2\}$
