@@ -32,13 +32,14 @@ components of a general tracking algorithm :
     <li>MB-LBP is when this process is done on a 9x9 window considering the sum of each 3x3 window a single pixel.</li>
     <br>
     <img src="imgs/mblbp.png">[1]</li>
+    <li>For a given target object at location 'I_t' and a decriptive image patch 'X' of width 'w', and height 'h' of the object, A set of 'k' (<b>k is 40 in the paper</b>) random pixels is selected with uniform probability. A vector of 'k' binary patterns corresponding to each of the randomly selected pixels, is considered as the feature vector for that patch X (and the target object). </li>
 
 </ul>
 <h3> Feature similarity </h3>
 <ul>
     <li>The similarit between 2 different binary patterns is the number of corresponding element-wise (XOR "^" operator) differences, as follows :<br><br>
     <img src="imgs/lbp_sim.png">[1]
-    
+</ul>    
 
 <h2>Motion Model : Kalman Fiter</h2>
 <ul>
@@ -49,15 +50,13 @@ components of a general tracking algorithm :
         <li>step 3: Given the predicted location for the t+1'th frame, when t = t+1, The features are extracted from the predicted location, and the "observed" location is the region corresponding to features that match.</li>
         <li>step 4: This observed location in t+1'th (currently t'th)  frame is used to update the Kalman filter, to get the optimal location and uncertainty range.</li>
         <li>step 5 : The features then extracted from the optimal location is used to update the appearance model.</li>
-        <li>next_iter : This process conducted iteratly will track the target object.</li>
+        <li>next_iter : This process conducted iteratly will track the target object.</li><br>
+        <li><b>NOTE : During intial computation of the appearance model, The randomly selected k points (pixel locations (x,y) wrt the coordinate system of the image patch) are used throughout the lifetime of that object. (each time the patch location is updated, the same K points relative to the new patch location are considered for feature extraction)</b></li>
 </ul>
 
 <h2> Searching Model : </h2>
 <ul>
     <li> The target's object feature vector from the last tracked frame is used as the appearance model for object searching. </li>
 </ul>
-
-
-
 
 
