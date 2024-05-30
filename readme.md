@@ -43,14 +43,13 @@ components of a general tracking algorithm :
 <h2>Motion Model : Kalman Fiter</h2>
 <ul>
     <li>Kalman Filter is used to implement the motion model because it keeps track of the object's expectation, and variance, which is later used by the searching model.</li>
-    <ol>
+    <ul>
         <li>Step 1 : given an initial ROI (or bounding box), the features of this ROI is computed and used as the initial appearance model.</li>
         <li>Step 2 : For all following frames, given the estimated location and variance(uncertainty) of the t'th frame, those of the t+1'th frame are predicted by the Kalman filter.</li>
         <li>step 3: Given the predicted location for the t+1'th frame, when t = t+1, The features are extracted from the predicted location, and the "observed" location is the region corresponding to features that match.</li>
         <li>step 4: This observed location in t+1'th (currently t'th)  frame is used to update the Kalman filter, to get the optimal location and uncertainty range.</li>
         <li>step 5 : The features then extracted from the optimal location is used to update the appearance model.</li>
         <li>next_iter : This process conducted iteratly will track the target object.</li>
-
 </ul>
 
 <h2> Searching Model : </h2>
