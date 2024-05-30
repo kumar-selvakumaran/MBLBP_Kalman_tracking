@@ -16,5 +16,3 @@ components of a general searching algorithm :
 - appearance model : to identify the features that distinguish the target object from other objects
 - Motion Model : to model the motion of the target object. This essentially allows us to predict the next possible location of the object in a video.
 - Searching Strategy : An efficient strategy searching for the target in relevant regions of the image  when the object is lost.
-
-asd
