@@ -1,9 +1,15 @@
-<mxfile host="app.diagrams.net" modified="2024-05-30T02:05:56.051Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" version="24.3.1" etag="InZRe2e9dww2nRnLd3UP" type="github">
+<mxfile host="app.diagrams.net" modified="2024-05-30T02:08:18.279Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36" etag="62dK-K3cTKyVU-NlKBI_" version="24.3.1" type="github">
   <diagram name="Page-1" id="0KW9mrcXPOmYRZ7bN-s6">
-    <mxGraphModel>
+    <mxGraphModel dx="784" dy="400" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="mf72IKmzpZca9wISiKS5-1" value="1. MBLBP feature extraction class&lt;div&gt;2. Kalman Filter class&lt;/div&gt;&lt;div&gt;3. initialization class&lt;/div&gt;&lt;div&gt;4. tracking class&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="170" width="200" height="330" as="geometry" />
+        </mxCell>
+        <mxCell id="mf72IKmzpZca9wISiKS5-2" value="&lt;b&gt;Components&lt;/b&gt;&lt;div&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="120" y="180" width="60" height="20" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
