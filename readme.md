@@ -109,6 +109,7 @@ Given these establishments, the Prediction and correction can be done as below:
 **Prediction** :
 
 $$\hat{\mathbf{x}}_t^- = \mathbf{A} \hat{\mathbf{x}}_{t-1}$$
+
 $$\mathbf{P}_t^- = \mathbf{A} \mathbf{P}_{t-1} \mathbf{A}^T + \mathbf{Q}$$
 
 Where:
