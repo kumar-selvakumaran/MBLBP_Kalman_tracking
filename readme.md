@@ -10,6 +10,7 @@ environment:
 Docker run : ```docker run -it -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --network=host --volume=/mnt/d/projects/MBLBP_Kalman_tracking/python_implementation/app:/app --workdir=/app pytorch/pytorch:2.3.0-cuda12.1-cudnn8-runtime /bin/bash```
 
 ___
+
 ## Algorithm overview
 
 components of a general tracking algorithm :
@@ -42,7 +43,6 @@ components of a general tracking algorithm :
 ### Feature similarity
 
 - The similarit between 2 different binary patterns is the number of corresponding element-wise (XOR $\oplus$ "^" operator) differences, as follows:
-
 
 $$\mathrm{diff}(\xi_x, \xi_y) \triangleq \sum_{n=0}^{7} \xi_x^{(n)} \oplus \xi_y^{(n)}$$
 
@@ -79,15 +79,18 @@ $$\Delta l_t = \Delta l_{t-1} + dw_t$$
 Where $dw_t = [dw_{u,t}/dt, \;dw_{v,t}/dt]^T$. $dw_{u,t}/dt$ and $dw_{u,t}/dt$ are the disturb noises along the vertical and horizontal directions (which are also gaussian with 0 mean and std = $\sigma_{dw}^2$).
 
 Given:
-- state vector : $x = [u_t, v_t, du_t/dt, dv_t/dt]^T$ 
+
+- state vector : $x = [u_t, v_t, du_t/dt, dv_t/dt]^T$
 - observation of $l_t$ = $z_t$
-- The state space model can be formed as: 
+- The state space model can be formed as:
 $$x_t = Ax_{t-1} + n_t$$
 $$z_t = Hx_{t} + m_t$$
 where:
 - process noise is $n_t = [w_t^T, dw_t^T]^T$ with diagonal covariance $Q = diag \{ \sigma_w^2, \sigma_w^2, \sigma_dw^2, \sigma_dw^2 \} $
 - measurement noise is $m_t = [m_{u,t}, m_{v,t}]^T$ represents 0 mean and diagonal covariance matrix $R = diag \{ \sigma_m^2, \sigma_m^2\} $
-- $A$ is the state transition matrix : 
+
+- $A$ is the state transition matrix :
+
 $$
 \mathbf{A} = \begin{pmatrix}
 1 & 0 & \tau & 0 \\
@@ -96,13 +99,13 @@ $$
 0 & 0 & 0 & 1
 \end{pmatrix},
 $$
+
 - $H$ is the measurement matrix
-$$
-\mathbf{H} = \begin{pmatrix}
+
+$$\mathbf{H} = \begin{pmatrix}
 1 & 0 & 0 & 0 \\
 0 & 1 & 0 & 0
-\end{pmatrix}.
-$$
+\end{pmatrix}.$$
 
 Given these establishments, the Prediction and correction can be done as below:
 
