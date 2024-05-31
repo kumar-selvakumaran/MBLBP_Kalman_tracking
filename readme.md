@@ -30,11 +30,13 @@ components of a general tracking algorithm :
 
 - The feature encoding of an arbitrary pixel is given by the string formed by thresholding each of the 8 neighbouring pixels.
 
-    ![lbp](/imgs/lbp.png)
+![lbp](./imgs/lbp.png)
+
 - robust to monotonic greyscale illumnination variation.
 - MB-LBP is when this process is done on a 9x9 window considering the sum of each 3x3 window a single pixel.
 
-    ![lbp](/imgs/mblbp.png)
+![mblbp](/imgs/mblbp.png)
+
 - For a given target object at location $I_t$ and a decriptive image patch $X$ of width $w$, and height $h$ of the object, A set of $k$ (**$k$ is 40 in the paper**) random pixels is selected with uniform probability. A vector of $k$ binary patterns corresponding to each of the randomly selected pixels, is considered as the feature vector for that patch $X$ (and the target object).
 
 ### Feature similarity
