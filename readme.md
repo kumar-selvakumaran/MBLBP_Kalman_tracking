@@ -30,7 +30,7 @@ components of a general tracking algorithm :
 
 - The feature encoding of an arbitrary pixel is given by the string formed by thresholding each of the 8 neighbouring pixels.
 
-    ![lbp](/imgs/lbp.png)
+    ![lbp](./imgs/lbp.png)
 - robust to monotonic greyscale illumnination variation.
 - MB-LBP is when this process is done on a 9x9 window considering the sum of each 3x3 window a single pixel.
 
