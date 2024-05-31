@@ -40,11 +40,45 @@ components of a general tracking algorithm :
 
 - For a given target object at location $I_t$ and a decriptive image patch $X$ of width $w$, and height $h$ of the object, A set of $k$ (**$k$ is 40 in the paper**) random pixels is selected with uniform probability. A vector of $k$ binary patterns corresponding to each of the randomly selected pixels, is considered as the feature vector for that patch $X$ (and the target object).
 
+NOTE : ordering and relative locations of the randomly selected points to the patch coordinates are constant, after initialization for the lifetime of the object.
+
 ### Feature similarity
 
 - The similarit between 2 different binary patterns is the number of corresponding element-wise (XOR $\oplus$ "^" operator) differences, as follows:
 
 $$\mathrm{diff}(\xi_x, \xi_y) \triangleq \sum_{n=0}^{7} \xi_x^{(n)} \oplus \xi_y^{(n)}$$
+
+Given this definition of similarity between 2 Local Binary Patterns. A similarity vector between 2 patches is formed like so:
+
+$$\text{Diff}(f_{t-1}, f_t) = \begin{bmatrix} \text{diff}(\xi_{1, t-1}, \xi_{1, t}) & \dots & \text{diff}(\xi_{k, t-1}, \xi_{k, t}) \end{bmatrix}^T$$
+
+The similarity between the feature vectors of 2 patches is defined as a dot product, as shown below :
+
+$$Z_t = I_t\left(\arg\min_{X \in X^s} W^T * \text{Diff}(f_{t-1}, f(X))\right)$$
+
+where:
+- $Z_t$ is the measurement at time $t$.
+- W is a K-dimentional weight vector (details given below).
+
+The randomly selected k points are given importance (weighted by $W$) based on how close they are to the center of the patch. (Assumption that important features are often present in the center of the patch).
+
+The weight vector $W$ is calculated as below:
+
+## Check this!!!
+
+$$\omega_{\xi_i} = e^{-\frac{|x - u_c| + |y - v_c|}{\epsilon \ast (w+h)}}$$
+
+___
+
+where:
+- $\omega_{\xi_i}$ is the weight of differnence at $i$th randomly select point.
+- $x,y$ are the coordinates of the randomly selected pixel/point $i$ 
+- $u_c, v_c$ are the coordinates of the center point of the patch.
+- $w, h$ are the width and height of the image patch. (constant given an object.)
+- $\epsilon$ is a constant that controls the spread
+
+k-dimentional vector where each element $i$ of the vector corresponds to the similarity score between the $i$'th point of the first patch , and the $i$th point of the second patch.
+
 
 ## Motion Model : Kalman Fiter
 
@@ -62,6 +96,23 @@ Justification : When the objects more somewhat slowly (or the FPS is high enough
 ## Searching Model
 
 - The target's object feature vector from the last tracked frame is used as the appearance model for object searching.
+- the search space is as below:
+
+$$X^s = \{X : \|I_t(X) - I_{t-1}\| \leq s\}, \text{ where } s = \alpha \sqrt{\text{trace}(P_t^-)}$$
+
+where: 
+- $X^s$ is the search space
+- $X$ is the currently searched patch location.
+- $l_{t-1}$ is the location of the finally estimated previous patch (at time $t-1$) 
+- $I_t(X)$ is the location of the currently searched patch.
+- $\alpha$ is a constant.
+
+Simply put, the search space is constrained by the uncertainty of the location prediction namely it's variance.
+
+As mentioned above for the above specified search constraint, at each iteration, The target match as shown below:
+
+
+$$Z_t = I_t\left(\arg\min_{X \in X^s} W^T * \text{Diff}(f_{t-1}, f(X))\right)$$
 
 ## Modelling
 
