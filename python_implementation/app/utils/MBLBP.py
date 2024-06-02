@@ -17,13 +17,14 @@ def multi_block_batch(blocks, k):
     blocks_reduced = blocks_reshaped.sum(axis=(5, 6))
     return blocks_reduced
 
+
 def lbp_batch(windows):
     """
-    expected input as shape : [sxkx3x3x3] 
+    expected input as shape : [sxkx3x3x3]
     maybe 5-10 objects will be there just for loop it
     s : search space for a given target. #patches to search before determined lost
     k : number of randomly selected points for a given patch
-    for each window : 
+    for each window :
 
     Makes a local binary pattern for the given window in row major order like so
       1,2,3
@@ -34,17 +35,13 @@ def lbp_batch(windows):
     greater pixel are alloted '1' and '0' otherwise.
     '''
     """
-
-    centers = windows[:, :, 1, 1, :]  # Extract the center of each window
-    mask = np.ones_like(windows, dtype=bool)
-    mask[:, :, 1, 1, :] = False
-
-    centers = windows[:, :, 1, 1, :]  # Extract the center of each window
-    mask = np.ones_like(windows, dtype=bool)
-    mask[:, :, 1, 1, :] = False
     
+    centers = windows[:, :, :, 1, 1]  # Extract the center of each window
+    mask = np.ones_like(windows, dtype=bool)
+    mask[:, :, :, 1, 1] = False
+
     # We use broadcasting to compare all values in the window except the center against the center value
-    features = windows[mask].reshape(list(windows.shape[:-3]) + [8,3]) < centers[:, :, None, :]
+    features = windows[mask].reshape(list(windows.shape[:-3]) + [3,8]) > centers[:, :, :, None]
     return features.astype(int)
 
 
