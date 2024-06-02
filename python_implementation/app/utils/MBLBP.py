@@ -2,9 +2,10 @@ import numpy as np
 import os
 import numpy as np
 
+# TESTED
 def multi_block_batch(blocks, k):
     """
-    expected input as shape : [sxkx9x9x3] i.e. 'sxkx9x9x3' 
+    expected input as shape : [sxkx9x9x3] i.e. 'sxkx9x9x3'
     maybe 5-10 objects will be there just for loop it
     s : search space for a given target. #patches to search before determined lost
     k : number of randomly selected points for a given patch
@@ -12,8 +13,8 @@ def multi_block_batch(blocks, k):
 
     """
     blocks_reshaped = blocks.reshape(-1, k, 3, 3, 3, 3, 3)
-    blocks_reshaped = blocks_reshaped.swapaxes(3, 4)
-    blocks_reduced = blocks_reshaped.sum(axis=(4, 5))
+    blocks_reshaped = blocks_reshaped.swapaxes(4, 5)
+    blocks_reduced = blocks_reshaped.sum(axis=(5, 6))
     return blocks_reduced
 
 def lbp_batch(windows):
