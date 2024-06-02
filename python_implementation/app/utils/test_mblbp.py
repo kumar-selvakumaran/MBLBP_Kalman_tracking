@@ -3,7 +3,7 @@ import numpy as np
 import os
 import sys
 
-from MBLBP import multi_block_batch, lbp_batch
+from MBLBP import multi_block_batch, lbp_batch, get_search_dist_mat
 
 def test_multi_block_batch(sample_input = None):
     print(f"\n testing multi_block_batch()...")
@@ -65,9 +65,43 @@ def test_lbp_batch(sample_input = None):
                     print(f"\n MISMATCH ERROR : {binary_pattern, lbps[patch_ind, point_ind, channel_ind, :]}")
       
           
+
+def test_get_search_dist_mat(sample_input = None):
+    print(f"\n testing get_search_dist_mat()...")
+    input_given = False
+    if sample_input is None:
+        a = np.random.rand(100,40,3,9,9)*255
+        k = 40
+
+    else:
+        a = sample_input
+        _, k, _, _, _ = sample_input.shape
+        input_given = True
+
+    windows = multi_block_batch(a, k)
+    lbps = lbp_batch(windows)
+
+    num_patches, num_points, num_channels, _, _ = a.shape
+    rand_bs = np.random.randint(0, 2, size=(40, 3, 8))
+
+    code_scores = get_search_dist_mat(lbps, rand_bs)
+
+    for patch_ind in tqdm(range(num_patches)):
+        for point_ind in range(num_points):
+            for channel_ind in range(num_channels):
+
+                binary_pattern = lbps[patch_ind, point_ind, channel_ind]
+
+                xor_result = np.bitwise_xor(binary_pattern, rand_bs)
+                test_scores = np.sum(xor_result.astype(int), axis=-1)
+
+                if code_scores[patch_ind, point_ind, channel_ind] != test_scores[point_ind, channel_ind]:
+                    print(f"\n MISMATCH ERROR : code score : {code_scores[patch_ind, point_ind, channel_ind]}, test score: {test_scores[point_ind, channel_ind]}")
+      
 def main():
     test_multi_block_batch()
     test_lbp_batch()
+    test_get_search_dist_mat()
 
 if __name__ == "__main__":
     main()

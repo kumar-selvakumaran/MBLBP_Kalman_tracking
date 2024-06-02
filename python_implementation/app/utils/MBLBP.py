@@ -5,7 +5,7 @@ import numpy as np
 # TESTED
 def multi_block_batch(blocks, k):
     """
-    expected input as shape : [sxkx9x9x3] i.e. 'sxkx9x9x3'
+    expected input as shape : [sxkx3x9x9] i.e. 'sxkx3x9x9'
     maybe 5-10 objects will be there just for loop it
     s : search space for a given target. #patches to search before determined lost
     k : number of randomly selected points for a given patch
@@ -17,7 +17,7 @@ def multi_block_batch(blocks, k):
     blocks_reduced = blocks_reshaped.sum(axis=(5, 6))
     return blocks_reduced
 
-
+# TESTED
 def lbp_batch(windows):
     """
     expected input as shape : [sxkx3x3x3]
@@ -35,7 +35,7 @@ def lbp_batch(windows):
     greater pixel are alloted '1' and '0' otherwise.
     '''
     """
-    
+
     centers = windows[:, :, :, 1, 1]  # Extract the center of each window
     mask = np.ones_like(windows, dtype=bool)
     mask[:, :, :, 1, 1] = False
@@ -44,18 +44,22 @@ def lbp_batch(windows):
     features = windows[mask].reshape(list(windows.shape[:-3]) + [3,8]) > centers[:, :, :, None]
     return features.astype(int)
 
-
-def make_patch_feature(lbps, query_lbp):
+# TESTED
+# - check if a single object can have multiple patches.
+# - may need to add up channel scores to have 1 score per pixel
+def get_search_dist_mat(lbps, target_patch):
     """
-    expected input as shape : [sxkx8x3] 
+    expected input :
+    1. lbps : local binary patterns of 's' patches (search space) [sxkx3x8]
+    2. target_patch : k binary pattern feature vector of the target [kx3x8]
     maybe 5-10 objects will be there just for loop it
     s : search space for a given target. #patches to search before determined lost
     k : number of randomly selected points for a given patch
-    for each window 
+    for each window
 
-    Given the an array of 'k' local binary patterns corresponding to each of 
+    Given the an array of 'k' local binary patterns corresponding to each of
     the randomly selected points for the given
     """
-    xor_result = np.bitwise_xor(lbps, query_lbp)
-    xor_difference_scores = np.sum(xor_result.astype(int), axis=-2)
+    xor_result = np.bitwise_xor(lbps, target_patch)
+    xor_difference_scores = np.sum(xor_result.astype(int), axis=-1)
     return xor_difference_scores
