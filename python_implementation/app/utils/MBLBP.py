@@ -47,7 +47,7 @@ def lbp_batch(windows):
 # TESTED
 # - check if a single object can have multiple patches.
 # - may need to add up channel scores to have 1 score per pixel
-def get_search_dist_mat(lbps, target_patch):
+def get_search_point_correspondence(lbps, target_patch):
     """
     expected input :
     1. lbps : local binary patterns of 's' patches (search space) [sxkx3x8]

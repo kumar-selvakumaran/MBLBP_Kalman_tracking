@@ -183,3 +183,34 @@ $$\mathbf{K}_t = \mathbf{P}_t^- \mathbf{H}^T (\mathbf{H} \mathbf{P}_t^- \mathbf{
 where:
 - $K_t$ is the Kalman gain matrix
 - $P_t$ is the estimated covariance matrix of $\hat{\mathbf{x}}_t$.
+
+___
+
+# MAJOR TODOs
+
+- The algorithm might not be scale invariant. Depending on the scale used for determining point locations. There is a chance for scale variance, if all the K points are relative to the patch dimentions, and if they are normalized. Because : 
+
+1. If they are not normalized, The contribution of the features at the periphery will reduce dramatically, as the object scale increases a lot. (COMPROMISES SCALE INVARIANCE)
+
+2. If the coordinates are not relative to the patch location., then the feature's weighting will change based on location, which location of the patch (COMPRAMISES SHIFT INVARIANCE) 
+
+# !!!!! IDEA FOR BETTER SCALE INVARIANCE : 
+1. Instead of having a kalman tracker for the patch location. Have a Kalman tracker for each feature point. and find the best point-wise matches (instead of patch-wise match) within the search area.
+
+NOTE : patchwise comparison still happens but the pointwise best matches are kept.
+
+### Changes
+
+1. if point $p_i$ $ : i \in [1,k]$ , and patch $l_j \in$ search space $X_s$. Then $p_{i,j} $ is compared to $p_{i,j+1}$, like the original algorithm, BUT. the final points need not belong to a single patch. ($p_i$ can be from $l_j$ and $p_{i+1}$ can be from $p_{j+1}$).
+
+2. The Kalman filter is still parameterized by the the target xy corrdinates NOT by "patch center", but with by the the **mean of the selected feature points**.
+
+3. Initialization change : Instead of 'k' randomly selected points, **select 'k/4' randomly selected points, and add their veritcal and horizontal mirror reflections.** The initial state is then the average of the final 'k' points, which will simply be the patch center.
+
+4. The width and height is no longer characterized by target initialization. It will now be the **bounding box characterized by the minimum and maximum x,y coordinates from the k selected feature points**. This bounding box is what will be considered a patch.
+
+5. These changes should enhance scale invariance, and should be more robust to small view changes (non-rigid-body transformations) as well.
+
+
+
+<!-- 2. i.e) now , relative postions of points are allowed to change.  -->

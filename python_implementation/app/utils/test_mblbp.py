@@ -3,7 +3,7 @@ import numpy as np
 import os
 import sys
 
-from MBLBP import multi_block_batch, lbp_batch, get_search_dist_mat
+from MBLBP import multi_block_batch, lbp_batch, get_search_point_correspondence
 
 def test_multi_block_batch(sample_input = None):
     print(f"\n testing multi_block_batch()...")
@@ -32,6 +32,9 @@ def test_multi_block_batch(sample_input = None):
                 if not np.array_equal((testblock *1e8).astype(int), (windows[patch_ind, point_ind,channel_ind]*1e8).astype(int)):
                     print(f"\n\nPRECISION ERROR : {(testblock *1e8).astype(int), (windows[patch_ind, point_ind,channel_ind]*1e8).astype(int)}")
                     break
+
+    print(f"\ninput shape : {a.shape} , output shape : {windows.shape}\n")
+
 
 
 def test_lbp_batch(sample_input = None):
@@ -64,10 +67,11 @@ def test_lbp_batch(sample_input = None):
                 if not np.array_equal(binary_pattern, lbps[patch_ind, point_ind, channel_ind, :]):
                     print(f"\n MISMATCH ERROR : {binary_pattern, lbps[patch_ind, point_ind, channel_ind, :]}")
       
-          
+    print(f"\ninput shape : {windows.shape} , output shape : {lbps.shape}\n")
 
-def test_get_search_dist_mat(sample_input = None):
-    print(f"\n testing get_search_dist_mat()...")
+
+def test_get_search_point_correspondence(sample_input = None):
+    print(f"\n testing get_search_point_correspondence()...")
     input_given = False
     if sample_input is None:
         a = np.random.rand(100,40,3,9,9)*255
@@ -84,7 +88,7 @@ def test_get_search_dist_mat(sample_input = None):
     num_patches, num_points, num_channels, _, _ = a.shape
     rand_bs = np.random.randint(0, 2, size=(40, 3, 8))
 
-    code_scores = get_search_dist_mat(lbps, rand_bs)
+    code_scores = get_search_point_correspondence(lbps, rand_bs)
 
     for patch_ind in tqdm(range(num_patches)):
         for point_ind in range(num_points):
@@ -97,11 +101,13 @@ def test_get_search_dist_mat(sample_input = None):
 
                 if code_scores[patch_ind, point_ind, channel_ind] != test_scores[point_ind, channel_ind]:
                     print(f"\n MISMATCH ERROR : code score : {code_scores[patch_ind, point_ind, channel_ind]}, test score: {test_scores[point_ind, channel_ind]}")
-      
+    
+    print(f"\ninput shape : {lbps.shape , rand_bs.shape} , output shape : {code_scores.shape}\n")
+
 def main():
     test_multi_block_batch()
     test_lbp_batch()
-    test_get_search_dist_mat()
+    test_get_search_point_correspondence()
 
 if __name__ == "__main__":
     main()
