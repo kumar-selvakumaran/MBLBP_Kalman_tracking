@@ -65,7 +65,12 @@ def get_search_point_correspondence(lbps, target_patch):
     return xor_difference_scores
 
 
-
+"""
+img here will be the region of the slice of the image specified by the
+predicted location's covariance matrix (uncertainty of prediction). Instead of taking
+the circular region of the image with radius = root(trace), we take a square region
+with side length = (1/root(2)) root(trace) (suc that the 1/2 diagonal = alpha * root(trace))
+"""
 def get_search_space(img, patch_width, patch_height, stride_width, stride_height):
     """
     Extracts stride-wise windows from a 2D matrix using the sliding_window_view method.
